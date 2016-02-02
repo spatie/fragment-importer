@@ -1,0 +1,40 @@
+{
+    "name": "spatie/blender-fragment-importer",
+    "description": "Import fragments with excel files",
+    "keywords": [
+        "spatie",
+        "blender-fragment-importer"
+    ],
+    "homepage": "https://github.com/spatie/blender-fragment-importer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Freek Van der Herten",
+            "email": "freek@spatie.be",
+            "homepage": "https://spatie.be",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : ">=7.0",
+        "illuminate/console": "^5.2",
+        "maatwebsite/excel": "^2.1",
+        "illuminate/support": "^5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spatie\\FragmentImporter\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Spatie\\Skeleton\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    }
+}
