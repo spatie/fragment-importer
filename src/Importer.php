@@ -3,7 +3,6 @@
 namespace Spatie\FragmentImporter;
 
 use App\Models\Fragment;
-use App\Repositories\FragmentRepository;
 use Excel;
 use Maatwebsite\Excel\Collections\CellCollection;
 use Maatwebsite\Excel\Collections\RowCollection;
@@ -11,19 +10,11 @@ use Maatwebsite\Excel\Readers\LaravelExcelReader;
 
 class Importer
 {
-    /** @var \App\Repositories\FragmentRepository */
-    protected $fragmentRepository;
-
     /** @var string */
     protected $importFile;
 
     /** @var bool */
     protected $updateExistingFragments = false;
-
-    public function __construct(FragmentRepository $fragmentRepository)
-    {
-        $this->fragmentRepository = $fragmentRepository;
-    }
 
     public function updateExistingFragments() : Importer
     {
@@ -43,7 +34,7 @@ class Importer
             $reader->all()->each(function (RowCollection $rowCollection) {
 
                 $rowCollection->each(function (CellCollection $row) use ($rowCollection) {
-                    $fragment = $this->fragmentRepository->findByName($row->name);
+                    $fragment = Fragment::findByName($row->name);
 
                     if ($fragment && !$this->updateExistingFragments) {
                         return;

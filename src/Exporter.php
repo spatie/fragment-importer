@@ -3,26 +3,18 @@
 namespace Spatie\FragmentImporter;
 
 use App\Models\Fragment;
-use App\Repositories\FragmentRepository;
 use Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
 class Exporter
 {
-    /** @var \App\Repositories\FragmentRepository */
-    protected $fragmentRepository;
 
     public static function sendExportToBrowser()
     {
-        $exporter = app(self::class);
+        $exporter = new static;
 
         $exporter->generateExcel();
-    }
-
-    public function __construct(FragmentRepository $fragmentRepository)
-    {
-        $this->fragmentRepository = $fragmentRepository;
     }
 
     public function generateExcel()
