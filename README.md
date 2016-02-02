@@ -1,11 +1,11 @@
 # Import fragments from an excel file
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/blender-fragment-importer.svg?style=flat-square)](https://packagist.org/packages/spatie/blender-fragment-importer)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/fragment-importer.svg?style=flat-square)](https://packagist.org/packages/spatie/fragment-importer)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/spatie/blender-fragment-importer/master.svg?style=flat-square)](https://travis-ci.org/spatie/blender-fragment-importer)
+[![Build Status](https://img.shields.io/travis/spatie/fragment-importer/master.svg?style=flat-square)](https://travis-ci.org/spatie/fragment-importer)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/xxxxxxxxx.svg?style=flat-square)](https://insight.sensiolabs.com/projects/xxxxxxxxx)
-[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/blender-fragment-importer.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/blender-fragment-importer)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/blender-fragment-importer.svg?style=flat-square)](https://packagist.org/packages/spatie/blender-fragment-importer)
+[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/fragment-importer.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/fragment-importer)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/fragment-importer.svg?style=flat-square)](https://packagist.org/packages/spatie/fragment-importer)
 
 This Blender specific package provides some classes and commands to easily import fragments
 using an excel file. An exporter is included too.
@@ -23,7 +23,7 @@ In order to install it via composer you must specify this extra repository in `c
 
 You can install the package via composer:
 ``` bash
-$ composer require spatie/blender-fragment-importer
+$ composer require spatie/fragment-importer
 ```
 
 ## Usage

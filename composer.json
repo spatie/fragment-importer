@@ -1,11 +1,11 @@
 {
-    "name": "spatie/blender-fragment-importer",
+    "name": "spatie/fragment-importer",
     "description": "Import fragments with excel files",
     "keywords": [
         "spatie",
-        "blender-fragment-importer"
+        "fragment-importer"
     ],
-    "homepage": "https://github.com/spatie/blender-fragment-importer",
+    "homepage": "https://github.com/spatie/fragment-importer",
     "license": "MIT",
     "authors": [
         {
