@@ -1,11 +1,8 @@
 # Import fragments from an excel file
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/fragment-importer.svg?style=flat-square)](https://packagist.org/packages/spatie/fragment-importer)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/spatie/fragment-importer/master.svg?style=flat-square)](https://travis-ci.org/spatie/fragment-importer)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/xxxxxxxxx.svg?style=flat-square)](https://insight.sensiolabs.com/projects/xxxxxxxxx)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/9012cf42-8d1a-4649-b5ab-b96db48eed21.svg?style=flat-square)](https://insight.sensiolabs.com/projects/9012cf42-8d1a-4649-b5ab-b96db48eed21)
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/fragment-importer.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/fragment-importer)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/fragment-importer.svg?style=flat-square)](https://packagist.org/packages/spatie/fragment-importer)
 
 This Blender specific package provides some classes and commands to easily import fragments
 using an excel file. An exporter is included too.

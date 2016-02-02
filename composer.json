@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php" : ">=7.0",
+        "php" : "^7.0",
         "illuminate/console": "^5.2",
         "maatwebsite/excel": "^2.1",
         "illuminate/support": "^5.2"
