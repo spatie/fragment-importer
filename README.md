@@ -1,4 +1,4 @@
-# blender-fragment-importer
+# Import fragments from an excel file
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/blender-fragment-importer.svg?style=flat-square)](https://packagist.org/packages/spatie/blender-fragment-importer)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
