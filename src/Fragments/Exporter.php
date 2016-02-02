@@ -1,6 +1,6 @@
 <?php
 
-namespace App\FragmentImporter;
+namespace Spatie\FragmentImporter;
 
 use App\Models\Fragment;
 use App\Repositories\FragmentRepository;

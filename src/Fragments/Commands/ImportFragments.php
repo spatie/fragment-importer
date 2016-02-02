@@ -1,8 +1,8 @@
 <?php
 
-namespace App\FragmentImporter\Commands;
+namespace Spatie\FragmentImporter\Commands;
 
-use App\FragmentImporter\Importer;
+use Spatie\FragmentImporter\Importer;
 use Artisan;
 use Cache;
 use Illuminate\Console\Command;
