@@ -2,7 +2,13 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 1.0.3 - 2016-02-04
+
+- Fixed syntax error
+
 ## 1.0.2 - 2016-02-04
+
+### this version is broken, do not use
 
 - Set draft column to false by default
 
