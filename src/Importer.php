@@ -50,7 +50,7 @@ class Importer
                     $fragment->hidden = ($rowCollection->getTitle() === 'hidden');
                     $fragment->contains_html = $row->contains_html ?? false;
                     $fragment->description = $row->description ?? '';
-                    $fragment->draft = 0
+                    $fragment->draft = 0;
 
                     foreach (config('app.fragmentLocales') as $locale) {
                         $fragment->translate($locale)->text = $row->{"text_{$locale}"} ?? '';
