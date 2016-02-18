@@ -2,6 +2,11 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 1.0.4 - 2016-02-18
+
+- Added some margin for errors when Excel rows are empty
+
+
 ## 1.0.3 - 2016-02-04
 
 - Fixed syntax error
