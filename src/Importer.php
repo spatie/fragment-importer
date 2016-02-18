@@ -34,6 +34,11 @@ class Importer
             $reader->all()->each(function (RowCollection $rowCollection) {
 
                 $rowCollection->each(function (CellCollection $row) use ($rowCollection) {
+                    
+                    if (empty($row->name)) {
+                        return;
+                    }
+                    
                     $fragment = Fragment::findByName($row->name);
 
                     if ($fragment && !$this->updateExistingFragments) {
