@@ -57,7 +57,7 @@ class Importer
                     $fragment->description = $row->description ?? '';
                     $fragment->draft = 0;
 
-                    foreach (config('app.fragmentLocales') as $locale) {
+                    foreach (config('app.locales') as $locale) {
                         $fragment->translate($locale)->text = $row->{"text_{$locale}"} ?? '';
                     }
 
