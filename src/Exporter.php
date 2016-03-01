@@ -52,7 +52,7 @@ class Exporter
                 $translatedFragmentProperties = array_map(function ($locale) use ($fragment) {
                     return $fragment->translate($locale)->text;
 
-                }, config('app.fragmentLocales'));
+                }, config('app.locales'));
 
                 $sheet->row($rowCounter++, array_merge($fragmentProperties, $translatedFragmentProperties));
             }
@@ -63,7 +63,7 @@ class Exporter
     {
         $textColumnNames = array_map(function (string $locale) {
            return "text_{$locale}";
-        }, config('app.fragmentLocales'));
+        }, config('app.locales'));
 
         return array_merge(['name', 'contains_html', 'description'], $textColumnNames);
     }
