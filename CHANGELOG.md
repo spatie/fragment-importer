@@ -2,6 +2,10 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 1.0.6 - 2016-03-01
+
+- Import all languages set in `app.locales`
+
 ## 1.0.5 - 2016-03-01
 
 - Export all languages set in `app.locales`
