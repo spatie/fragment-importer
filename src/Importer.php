@@ -34,11 +34,11 @@ class Importer
             $reader->all()->each(function (RowCollection $rowCollection) {
 
                 $rowCollection->each(function (CellCollection $row) use ($rowCollection) {
-                    
+
                     if (empty($row->name)) {
                         return;
                     }
-                    
+
                     $fragment = Fragment::findByName($row->name);
 
                     if ($fragment && !$this->updateExistingFragments) {
@@ -58,7 +58,7 @@ class Importer
                     $fragment->draft = 0;
 
                     foreach (config('app.locales') as $locale) {
-                        $fragment->translate($locale)->text = $row->{"text_{$locale}"} ?? '';
+                        $fragment->setTranslation('text', $locale, $row->{"text_{$locale}"} ?? '');
                     }
 
                     $fragment->save();
