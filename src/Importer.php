@@ -4,9 +4,9 @@ namespace Spatie\FragmentImporter;
 
 use App\Models\Fragment;
 use Excel;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Collections\CellCollection;
 use Maatwebsite\Excel\Collections\RowCollection;
-use Maatwebsite\Excel\Readers\LaravelExcelReader;
 
 class Importer
 {
@@ -25,44 +25,50 @@ class Importer
 
     public function import(string $path)
     {
+        $this->loadFragments($path)->each(function (Fragment $fragment) {
+
+            if (!$this->updateExistingFragments && Fragment::findByName($fragment->name)) {
+                return;
+            }
+
+            $fragment->save();
+
+        });
+    }
+
+    public function loadFragments(string $path): Collection
+    {
         if (!file_exists($path)) {
             throw new \Exception("import file `{$path}` does not exist");
         }
 
-        Excel::load($path, function (LaravelExcelReader $reader) {
+        $reader = Excel::load($path);
 
-            $reader->all()->each(function (RowCollection $rowCollection) {
+        return $reader->all()->flatMap(function (RowCollection $rowCollection) {
 
-                $rowCollection->each(function (CellCollection $row) use ($rowCollection) {
+            return $rowCollection->map(function (CellCollection $row) use ($rowCollection) {
 
-                    if (empty($row->name)) {
-                        return;
-                    }
+                if (empty($row->name)) {
+                    return;
+                }
 
-                    $fragment = Fragment::findByName($row->name);
+                if (!strlen(trim($row->name))) {
+                    return;
+                }
 
-                    if ($fragment && !$this->updateExistingFragments) {
-                        return;
-                    }
+                $fragment = new Fragment();
 
-                    if (!strlen(trim($row->name))) {
-                        return;
-                    }
+                $fragment->name = $row->name;
+                $fragment->hidden = ($rowCollection->getTitle() === 'hidden');
+                $fragment->contains_html = $row->contains_html ?? false;
+                $fragment->description = $row->description ?? '';
+                $fragment->draft = 0;
 
-                    $fragment = $fragment ?? new Fragment();
+                foreach (config('app.locales') as $locale) {
+                    $fragment->translate($locale)->text = $row->{"text_{$locale}"} ?? '';
+                }
 
-                    $fragment->name = $row->name;
-                    $fragment->hidden = ($rowCollection->getTitle() === 'hidden');
-                    $fragment->contains_html = $row->contains_html ?? false;
-                    $fragment->description = $row->description ?? '';
-                    $fragment->draft = 0;
-
-                    foreach (config('app.locales') as $locale) {
-                        $fragment->setTranslation('text', $locale, $row->{"text_{$locale}"} ?? '');
-                    }
-
-                    $fragment->save();
-                });
+                return $fragment;
             });
         });
     }
