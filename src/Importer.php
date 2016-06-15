@@ -3,6 +3,7 @@
 namespace Spatie\FragmentImporter;
 
 use App\Models\Fragment;
+use Cache;
 use Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Collections\CellCollection;
@@ -25,6 +26,8 @@ class Importer
 
     public function import(string $path)
     {
+        Cache::flush();
+        
         $this->loadFragments($path)->each(function (Fragment $fragment) {
 
             if (!$this->updateExistingFragments && Fragment::findByName($fragment->name)) {
