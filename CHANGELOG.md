@@ -2,6 +2,11 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 2.0.1 - 2016-06-15
+
+- Replaced translation api with `spatie/laravel-translatable`'s
+- Separated Excel load from import
+
 ## 1.0.6 - 2016-03-01
 
 - Import all languages set in `app.locales`
