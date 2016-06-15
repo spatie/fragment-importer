@@ -3,76 +3,83 @@
 namespace Spatie\FragmentImporter;
 
 use App\Models\Fragment;
-use Cache;
 use Excel;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Collections\CellCollection;
-use Maatwebsite\Excel\Collections\RowCollection;
+use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
-class Importer
+class Exporter
 {
-    /** @var string */
-    protected $importFile;
 
-    /** @var bool */
-    protected $updateExistingFragments = false;
-
-    public function updateExistingFragments(): Importer
+    public static function sendExportToBrowser()
     {
-        $this->updateExistingFragments = true;
+        $exporter = new static;
 
-        return $this;
+        $exporter->generateExcel();
     }
 
-    public function import(string $path)
+    public function generateExcel()
     {
-        Cache::flush();
+        Excel::create('fragments '.date('Y-m-d H:i:s'), function ($excel) {
 
-        $this->loadFragments($path)->each(function (Fragment $fragment) {
+            $this->addSheet($excel, 'fragments', $this->getVisibleFragments());
+            $this->addSheet($excel, 'hidden', $this->getHiddenFragments());
 
-            if (!$this->updateExistingFragments && Fragment::findByName($fragment->name)) {
-                return;
-            }
-
-            $fragment->save();
-
-        });
+        })->download('xlsx');
     }
 
-    public function loadFragments(string $path): Collection
+    protected function addSheet(LaravelExcelWriter $excel, string $name, Collection $fragments)
     {
-        if (!file_exists($path)) {
-            throw new \Exception("import file `{$path}` does not exist");
-        }
+        $excel->sheet($name, function ($sheet) use ($fragments) {
 
-        $reader = Excel::load($path);
+            $sheet->freezeFirstRow();
 
-        return $reader->all()->flatMap(function (RowCollection $rowCollection) {
-
-            return $rowCollection->map(function (CellCollection $row) use ($rowCollection) {
-
-                if (empty($row->name)) {
-                    return;
-                }
-
-                if (!strlen(trim($row->name))) {
-                    return;
-                }
-
-                $fragment = new Fragment();
-
-                $fragment->name = $row->name;
-                $fragment->hidden = ($rowCollection->getTitle() === 'hidden');
-                $fragment->contains_html = $row->contains_html ?? false;
-                $fragment->description = $row->description ?? '';
-                $fragment->draft = 0;
-
-                Locales::forFragments()->each(function (string $locale) use ($fragment, $row) {
-                    $fragment->setTranslation('text', $locale, $row->{"text_{$locale}"} ?? '');
-                });
-
-                return $fragment;
+            $sheet->cells('A1:Z1', function ($cells) {
+                $cells->setFontWeight('bold');
+                $cells->setBorder('node', 'none', 'solid', 'none');
             });
+
+            $rowCounter = 1;
+
+            $sheet->row($rowCounter++, $this->getHeaderColumns());
+
+            foreach ($fragments as $fragment) {
+                $fragmentProperties = [
+                    $fragment['name'],
+                    $fragment['contains_html'],
+                    $fragment['description'],
+                ];
+
+                $translatedFragmentProperties = Locales::forFragments()
+                    ->map(function (string $locale) use ($fragment) {
+                        return $fragment->getTranslation('text', $locale);
+                    })->toArray();
+
+                $sheet->row($rowCounter++, array_merge($fragmentProperties, $translatedFragmentProperties));
+            }
         });
+    }
+
+    protected function getHeaderColumns(): array
+    {
+        return collect(['name', 'contains_html', 'description'])->merge(
+            Locales::forFragments()->map(function (string $locale) {
+                return "text_{$locale}";
+            })
+        )->toArray();
+    }
+
+    public function getVisibleFragments(): Collection
+    {
+        return $this->getFragments($hidden = false);
+    }
+
+    public function getHiddenFragments(): Collection
+    {
+        return $this->getFragments($hidden = true);
+    }
+
+    public function getFragments(bool $hidden): Collection
+    {
+        return Fragment::where('hidden', $hidden)->orderBy('name')->get();
     }
 }
