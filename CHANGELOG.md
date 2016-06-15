@@ -2,6 +2,10 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 2.0.2 - 2016-06-15
+
+- Bugfixes
+
 ## 2.0.1 - 2016-06-15
 
 - Replaced translation api with `spatie/laravel-translatable`'s
