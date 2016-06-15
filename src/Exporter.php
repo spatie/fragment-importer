@@ -49,36 +49,36 @@ class Exporter
                     $fragment['description'],
                 ];
 
-                $translatedFragmentProperties = array_map(function ($locale) use ($fragment) {
-                    return $fragment->translate($locale)->text;
-
-                }, config('app.locales'));
+                $translatedFragmentProperties = Locales::forFragments()
+                    ->map(function (string $locale) use ($fragment) {
+                        return $fragment->getTranslation('text', $locale);
+                    });
 
                 $sheet->row($rowCounter++, array_merge($fragmentProperties, $translatedFragmentProperties));
             }
         });
     }
 
-    protected function getHeaderColumns() : array
+    protected function getHeaderColumns(): array
     {
-        $textColumnNames = array_map(function (string $locale) {
-           return "text_{$locale}";
-        }, config('app.locales'));
-
-        return array_merge(['name', 'contains_html', 'description'], $textColumnNames);
+        return collect(['name', 'contains_html', 'description'])->merge(
+            Locales::forFragments()->map(function (string $locale) {
+                return "text_{$locale}";
+            })
+        );
     }
 
-    public function getVisibleFragments() : Collection
+    public function getVisibleFragments(): Collection
     {
         return $this->getFragments($hidden = false);
     }
 
-    public function getHiddenFragments() : Collection
+    public function getHiddenFragments(): Collection
     {
         return $this->getFragments($hidden = true);
     }
 
-    public function getFragments(bool $hidden) : Collection
+    public function getFragments(bool $hidden): Collection
     {
         return Fragment::where('hidden', $hidden)->orderBy('name')->get();
     }

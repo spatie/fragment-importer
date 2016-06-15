@@ -17,7 +17,7 @@ class Importer
     /** @var bool */
     protected $updateExistingFragments = false;
 
-    public function updateExistingFragments() : Importer
+    public function updateExistingFragments(): Importer
     {
         $this->updateExistingFragments = true;
 
@@ -67,9 +67,9 @@ class Importer
                 $fragment->description = $row->description ?? '';
                 $fragment->draft = 0;
 
-                foreach (config('app.locales') as $locale) {
+                Locales::forFragments()->each(function (string $locale) use ($fragment, $row) {
                     $fragment->setTranslation('text', $locale, $row->{"text_{$locale}"} ?? '');
-                }
+                });
 
                 return $fragment;
             });
