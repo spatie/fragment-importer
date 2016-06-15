@@ -27,7 +27,7 @@ class Importer
     public function import(string $path)
     {
         Cache::flush();
-        
+
         $this->loadFragments($path)->each(function (Fragment $fragment) {
 
             if (!$this->updateExistingFragments && Fragment::findByName($fragment->name)) {
@@ -68,7 +68,7 @@ class Importer
                 $fragment->draft = 0;
 
                 foreach (config('app.locales') as $locale) {
-                    $fragment->translate($locale)->text = $row->{"text_{$locale}"} ?? '';
+                    $fragment->setTranslation('text', $locale, $row->{"text_{$locale}"} ?? '');
                 }
 
                 return $fragment;
