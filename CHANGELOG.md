@@ -8,6 +8,8 @@ All Notable changes to `fragment-importer` will be documented in this file
 
 ## 2.0.2 - 2016-06-15
 
+**This version is bugged, do not use**
+
 - Bugfixes
 
 ## 2.0.1 - 2016-06-15
