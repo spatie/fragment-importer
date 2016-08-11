@@ -2,6 +2,9 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 2.0.4 - 2016-08-11
+- Stability improvements
+
 ## 2.0.3 - 2016-06-17
 
 - Restore importer
