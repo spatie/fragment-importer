@@ -51,11 +51,7 @@ class Importer
 
             return $rowCollection->map(function (CellCollection $row) use ($rowCollection) {
 
-                if (empty($row->name)) {
-                    return;
-                }
-
-                if (!strlen(trim($row->name))) {
+                if (empty(trim($row->name))) {
                     return;
                 }
 
@@ -75,6 +71,8 @@ class Importer
 
                 return $fragment;
             });
+        })->reject(function ($fragment) {
+            return is_null($fragment);
         });
     }
 }
