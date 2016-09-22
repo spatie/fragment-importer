@@ -2,6 +2,10 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 2.0.6 - 2016-09-22
+- Fixed an issue that would create duplicates when updating fragments 
+- Internal refactors & integration tests
+
 ## 2.0.5 - 2016-08-23
 - L5.3
 
