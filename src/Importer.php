@@ -3,76 +3,81 @@
 namespace Spatie\FragmentImporter;
 
 use App\Models\Fragment;
-use Cache;
-use Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Collections\CellCollection;
 use Maatwebsite\Excel\Collections\RowCollection;
+use Maatwebsite\Excel\Facades\Excel;
+use Spatie\FragmentImporter\Exceptions\FragmentFileNotFound;
 
 class Importer
 {
-    /** @var string */
-    protected $importFile;
-
     /** @var bool */
     protected $updateExistingFragments = false;
 
-    public function updateExistingFragments() : Importer
+    public function updateExistingFragments()
     {
         $this->updateExistingFragments = true;
-
-        return $this;
     }
 
     public function import(string $path)
     {
-        Cache::flush();
+        $this->guardAgainsInvalidPath($path);
 
-        $this->loadFragments($path)->each(function (Fragment $fragment) {
+        $this->loadFragments($path)->each(function (array $data) {
 
-            if (!$this->updateExistingFragments && Fragment::findByName($fragment->name)) {
+            $fragment = Fragment::firstOrNew(['name' => $data['name']]);
+
+            if (! $this->shouldImport($fragment)) {
                 return;
             }
 
-            $fragment->save();
+            $fragment->name = $data['name'];
+            $fragment->hidden = $data['hidden'];
+            $fragment->contains_html = $data['contains_html'] ?? false;
+            $fragment->description = $data['description'] ?? '';
+            $fragment->draft = false;
 
+            $this->locales()->each(function(string $locale) use ($fragment, $data) {
+                $fragment->setTranslation('text', $locale, $data["text_{$locale}"] ?? '');
+            });
+
+            $fragment->save();
         });
     }
 
-    public function loadFragments(string $path): Collection
+    protected function guardAgainsInvalidPath(string $path)
     {
-        if (!file_exists($path)) {
-            throw new \Exception("import file `{$path}` does not exist");
+        if (! file_exists($path)) {
+            throw FragmentFileNotFound::inPath($path);
+        }
+    }
+
+    protected function loadFragments(string $path): Collection
+    {
+        return Excel::load($path)->all()->flatMap(function (RowCollection $rowCollection) {
+            return $rowCollection
+                ->reject(function (CellCollection $row) {
+                    return empty(trim($row->name));
+                })
+                ->map(function (CellCollection $row) use ($rowCollection) {
+                    return $row->put('hidden', $rowCollection->getTitle() === 'hidden')->toArray();
+                });
+        });
+    }
+
+    protected function shouldImport(Fragment $fragment): bool
+    {
+        if (! $fragment->exists) {
+            return true;
         }
 
-        $reader = Excel::load($path);
+        return $this->updateExistingFragments;
+    }
 
-        return $reader->all()->flatMap(function (RowCollection $rowCollection) {
-
-            return $rowCollection->map(function (CellCollection $row) use ($rowCollection) {
-
-                if (empty(trim($row->name))) {
-                    return;
-                }
-
-                $fragment = new Fragment();
-
-                $fragment->name = $row->name;
-                $fragment->hidden = ($rowCollection->getTitle() === 'hidden');
-                $fragment->contains_html = $row->contains_html ?? false;
-                $fragment->description = $row->description ?? '';
-                $fragment->draft = 0;
-
-                Locales::forFragments()
-                    ->flatten()
-                    ->each(function(string $locale) use ($fragment, $row) {
-                        $fragment->setTranslation('text', $locale, $row->{"text_{$locale}"} ?? '');
-                    });
-
-                return $fragment;
-            });
-        })->reject(function ($fragment) {
-            return is_null($fragment);
-        });
+    protected function locales(): Collection
+    {
+        return collect(config('app.locales'))
+            ->merge(config('app.backLocales'))
+            ->unique();
     }
 }

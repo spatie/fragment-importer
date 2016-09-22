@@ -23,13 +23,13 @@ class ImportFragments extends Command
             $importer->updateExistingFragments();
         }
 
+        Cache::flush();
+        $this->comment('Cache cleared');
+
         $latestExcelFile = $this->getLastestFragmentExcel();
 
         $this->comment("Importing fragments from {$latestExcelFile}");
         $importer->import($latestExcelFile);
-
-        Cache::flush();
-        $this->comment('Cache cleared');
 
         $this->info('Imported '.($this->option('update') ? 'all' : 'only the new').' fragments!');
     }
