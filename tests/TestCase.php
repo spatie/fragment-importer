@@ -38,9 +38,9 @@ abstract class TestCase extends Orchestra
 
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => $this->getTempDirectory() . '/database.sqlite',
-            'prefix' => '',
+            'driver'   => 'sqlite',
+            'database' => $this->getTempDirectory().'/database.sqlite',
+            'prefix'   => '',
         ]);
 
         $app['config']->set('app.key', '6rE9Nz59bGRbeMATftriyQjrpF7DcOQm');
@@ -52,7 +52,7 @@ abstract class TestCase extends Orchestra
 
     protected function setUpDatabase(Application $app)
     {
-        file_put_contents($this->getTempDirectory() . '/database.sqlite', null);
+        file_put_contents($this->getTempDirectory().'/database.sqlite', null);
 
         $app['db']->connection()->getSchemaBuilder()->create('fragments', function (Blueprint $table) {
             $table->increments('id');
@@ -68,8 +68,8 @@ abstract class TestCase extends Orchestra
 
     protected function setUpStubs()
     {
-        if ( ! class_exists(Fragment::class)) {
-            require_once __DIR__ . '/stubs/Fragment.php';
+        if (!class_exists(Fragment::class)) {
+            require_once __DIR__.'/stubs/Fragment.php';
         }
     }
 
@@ -84,6 +84,6 @@ abstract class TestCase extends Orchestra
 
     protected function getTempDirectory(string $suffix = ''): string
     {
-        return __DIR__ . '/temp' . ($suffix == '' ? '' : '/' . $suffix);
+        return __DIR__.'/temp'.($suffix == '' ? '' : '/'.$suffix);
     }
 }

@@ -24,10 +24,9 @@ class Importer
         $this->guardAgainsInvalidPath($path);
 
         $this->loadFragments($path)->each(function (array $data) {
-
             $fragment = Fragment::firstOrNew(['name' => $data['name']]);
 
-            if (! $this->shouldImport($fragment)) {
+            if (!$this->shouldImport($fragment)) {
                 return;
             }
 
@@ -37,7 +36,7 @@ class Importer
             $fragment->description = $data['description'] ?? '';
             $fragment->draft = false;
 
-            $this->locales()->each(function(string $locale) use ($fragment, $data) {
+            $this->locales()->each(function (string $locale) use ($fragment, $data) {
                 $fragment->setTranslation('text', $locale, $data["text_{$locale}"] ?? '');
             });
 
@@ -47,7 +46,7 @@ class Importer
 
     protected function guardAgainsInvalidPath(string $path)
     {
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             throw FragmentFileNotFound::inPath($path);
         }
     }
@@ -67,7 +66,7 @@ class Importer
 
     protected function shouldImport(Fragment $fragment): bool
     {
-        if (! $fragment->exists) {
+        if (!$fragment->exists) {
             return true;
         }
 
