@@ -53,14 +53,12 @@ class Importer
 
     protected function loadFragments(string $path): Collection
     {
-        return Excel::load($path)->all()->flatMap(function (RowCollection $rowCollection) {
-            return $rowCollection
-                ->reject(function (CellCollection $row) {
-                    return empty(trim($row->name));
-                })
-                ->map(function (CellCollection $row) use ($rowCollection) {
-                    return $row->put('hidden', $rowCollection->getTitle() === 'hidden')->toArray();
-                });
+        return Excel::load($path)->all()->flatMap(function (RowCollection $sheet) {
+            return $sheet->reject(function (CellCollection $row) {
+                return empty(trim($row->name));
+            })->map(function (CellCollection $row) use ($sheet) {
+                return $row->put('hidden', $sheet->getTitle() === 'hidden')->toArray();
+            });
         });
     }
 
