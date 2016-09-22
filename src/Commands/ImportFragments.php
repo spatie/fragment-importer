@@ -2,10 +2,10 @@
 
 namespace Spatie\FragmentImporter\Commands;
 
-use Spatie\FragmentImporter\Importer;
 use Artisan;
 use Cache;
 use Illuminate\Console\Command;
+use Spatie\FragmentImporter\Importer;
 
 class ImportFragments extends Command
 {
