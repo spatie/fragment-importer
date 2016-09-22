@@ -12,8 +12,8 @@ class Fragment extends Model
     protected $guarded = [];
     protected $casts = [
         'contains_html' => 'bool',
-        'draft' => 'bool',
-        'hidden' => 'bool',
+        'draft'         => 'bool',
+        'hidden'        => 'bool',
     ];
     public $translatable = ['text'];
 }
