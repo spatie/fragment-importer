@@ -54,10 +54,10 @@ class ImporterTest extends TestCase
     public function it_doesnt_overwrite_existing_fragments()
     {
         $fragment = new Fragment([
-            'name' => 'fragment.first',
-            'hidden' => false,
+            'name'          => 'fragment.first',
+            'hidden'        => false,
             'contains_html' => false,
-            'draft' => false,
+            'draft'         => false,
         ]);
         $fragment->setTranslation('text', 'nl', 'Hallo');
         $fragment->save();
@@ -73,10 +73,10 @@ class ImporterTest extends TestCase
     public function it_overwrites_existing_fragments_if_the_update_flag_is_set()
     {
         $fragment = new Fragment([
-            'name' => 'fragment.first',
-            'hidden' => false,
+            'name'          => 'fragment.first',
+            'hidden'        => false,
             'contains_html' => false,
-            'draft' => false,
+            'draft'         => false,
         ]);
         $fragment->setTranslation('text', 'nl', 'Hallo');
         $fragment->save();

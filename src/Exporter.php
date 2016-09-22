@@ -9,10 +9,9 @@ use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
 class Exporter
 {
-
     public static function sendExportToBrowser()
     {
-        $exporter = new static;
+        $exporter = new static();
 
         $exporter->generateExcel();
     }
@@ -20,17 +19,14 @@ class Exporter
     public function generateExcel()
     {
         Excel::create('fragments '.date('Y-m-d H:i:s'), function ($excel) {
-
             $this->addSheet($excel, 'fragments', $this->getVisibleFragments());
             $this->addSheet($excel, 'hidden', $this->getHiddenFragments());
-
         })->download('xlsx');
     }
 
     protected function addSheet(LaravelExcelWriter $excel, string $name, Collection $fragments)
     {
         $excel->sheet($name, function ($sheet) use ($fragments) {
-
             $sheet->freezeFirstRow();
 
             $sheet->cells('A1:Z1', function ($cells) {
