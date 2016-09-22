@@ -45,6 +45,7 @@ abstract class TestCase extends Orchestra
 
         $app['config']->set('app.key', '6rE9Nz59bGRbeMATftriyQjrpF7DcOQm');
 
+        $app['config']->set('app.locale', 'nl');
         $app['config']->set('app.locales', ['nl', 'fr']);
         $app['config']->set('app.backLocales', ['nl']);
     }

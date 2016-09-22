@@ -9,6 +9,11 @@ class Fragment extends Model
 {
     use HasTranslations;
 
-    public $translatable = ['text'];
     protected $guarded = [];
+    protected $casts = [
+        'contains_html' => 'bool',
+        'draft' => 'bool',
+        'hidden' => 'bool',
+    ];
+    public $translatable = ['text'];
 }
