@@ -3,6 +3,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/9012cf42-8d1a-4649-b5ab-b96db48eed21.svg?style=flat-square)](https://insight.sensiolabs.com/projects/9012cf42-8d1a-4649-b5ab-b96db48eed21)
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/fragment-importer.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie-custom/fragment-importer)
+[![StyleCI](https://styleci.io/repos/50928093/shield?branch=master)](https://styleci.io/repos/50928093)
 
 This Blender specific package provides some classes and commands to easily import fragments
 using an excel file. An exporter is included too.
