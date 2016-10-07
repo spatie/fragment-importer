@@ -20,7 +20,9 @@ class ImporterTest extends TestCase
     {
         $this->performImport();
 
-        $fragment = Fragment::where('name', 'fragment.first')->first();
+        $fragment = Fragment::where('group', 'fragment')
+            ->where('key', 'first')
+            ->first();
 
         $this->assertEquals('Een', $fragment->translate('text', 'nl'));
         $this->assertEquals('Un', $fragment->translate('text', 'fr'));

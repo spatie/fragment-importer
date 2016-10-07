@@ -54,9 +54,11 @@ abstract class TestCase extends Orchestra
     {
         file_put_contents($this->getTempDirectory().'/database.sqlite', null);
 
-        $app['db']->connection()->getSchemaBuilder()->create('fragments', function (Blueprint $table) {
+        $app['db']->connection()->getSchemaBuilder()->create('language_lines', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->index();
+            $table->string('group');
+            $table->index('group');
+            $table->string('key');
             $table->text('text');
             $table->string('description')->nullable();
             $table->boolean('contains_html')->default(false);
