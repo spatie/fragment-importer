@@ -6,5 +6,4 @@ use Spatie\TranslationLoader\LanguageLine;
 
 class Fragment extends LanguageLine
 {
-
 }
