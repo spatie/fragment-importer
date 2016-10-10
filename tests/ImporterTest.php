@@ -44,7 +44,7 @@ class ImporterTest extends TestCase
         $this->performImport();
 
         $notHidden = $this->getFragment('fragment', 'first');
-        $hidden =  $this->getFragment('fragment', 'hidden');
+        $hidden = $this->getFragment('fragment', 'hidden');
 
         $this->assertFalse($notHidden->hidden);
         $this->assertTrue($hidden->hidden);
@@ -54,11 +54,11 @@ class ImporterTest extends TestCase
     public function it_doesnt_overwrite_existing_fragments()
     {
         $fragment = new Fragment([
-            'group' => 'fragment',
-            'key' => 'first',
-            'hidden' => false,
+            'group'         => 'fragment',
+            'key'           => 'first',
+            'hidden'        => false,
             'contains_html' => false,
-            'draft' => false,
+            'draft'         => false,
         ]);
 
         $fragment->setTranslation('nl', 'Initial value');
@@ -75,11 +75,11 @@ class ImporterTest extends TestCase
     public function it_overwrites_existing_fragments_if_the_update_flag_is_set()
     {
         $fragment = new Fragment([
-            'group' => 'fragment',
-            'key' => 'first',
-            'hidden' => false,
+            'group'         => 'fragment',
+            'key'           => 'first',
+            'hidden'        => false,
             'contains_html' => false,
-            'draft' => false,
+            'draft'         => false,
         ]);
         $fragment->setTranslation('nl', 'Hallo');
         $fragment->save();
@@ -99,12 +99,13 @@ class ImporterTest extends TestCase
             $importer->updateExistingFragments();
         }
 
-        $importer->import(__DIR__ . '/fixtures/fragments.xlsx');
+        $importer->import(__DIR__.'/fixtures/fragments.xlsx');
     }
 
     /**
      * @param string $group
      * @param string $key
+     *
      * @return \App\Models\Fragment|null
      */
     protected function getFragment(string $group, string $key)
