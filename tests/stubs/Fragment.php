@@ -8,7 +8,7 @@ class Fragment extends LanguageLine
 {
     public $casts = [
         'contains_html' => 'boolean',
-        'hidden' => 'boolean',
-        'text' => 'array',
+        'hidden'        => 'boolean',
+        'text'          => 'array',
     ];
 }
