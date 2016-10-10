@@ -38,7 +38,7 @@ class Importer
             $fragment->draft = false;
 
             $this->locales()->each(function (string $locale) use ($fragment, $data) {
-                $fragment->setTranslation('text', $locale, $data["text_{$locale}"] ?? '');
+                $fragment->setTranslation($locale, $data["text_{$locale}"] ?? '');
             });
 
             $fragment->save();
