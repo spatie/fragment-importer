@@ -34,12 +34,10 @@ abstract class TestCase extends Orchestra
      */
     protected function getEnvironmentSetUp($app)
     {
-        $this->initializeDirectory($this->getTempDirectory());
-
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite', [
             'driver'   => 'sqlite',
-            'database' => $this->getTempDirectory().'/database.sqlite',
+            'database' => ':memory:',
             'prefix'   => '',
         ]);
 
@@ -52,8 +50,6 @@ abstract class TestCase extends Orchestra
 
     protected function setUpDatabase(Application $app)
     {
-        file_put_contents($this->getTempDirectory().'/database.sqlite', null);
-
         $app['db']->connection()->getSchemaBuilder()->create('fragments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('group');
@@ -82,10 +78,5 @@ abstract class TestCase extends Orchestra
         }
 
         File::makeDirectory($directory);
-    }
-
-    protected function getTempDirectory(string $suffix = ''): string
-    {
-        return __DIR__.'/temp'.($suffix == '' ? '' : '/'.$suffix);
     }
 }
