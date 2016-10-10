@@ -59,7 +59,7 @@ class Exporter
     protected function getHeaderColumns(): array
     {
         return collect(['group', 'key', 'contains_html', 'description'])->merge(
-            Locales::forFragments()->map(function (string $locale) {
+            locales()->map(function (string $locale) {
                 return "text_{$locale}";
             })
         );
