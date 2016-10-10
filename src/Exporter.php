@@ -40,14 +40,15 @@ class Exporter
 
             foreach ($fragments as $fragment) {
                 $fragmentProperties = [
-                    $fragment['name'],
+                    $fragment['group'],
+                    $fragment['key'],
                     $fragment['contains_html'],
                     $fragment['description'],
                 ];
 
                 $translatedFragmentProperties = Locales::forFragments()
                     ->map(function (string $locale) use ($fragment) {
-                        return $fragment->getTranslation('text', $locale);
+                        return $fragment->getTranslation($locale);
                     });
 
                 $sheet->row($rowCounter++, array_merge($fragmentProperties, $translatedFragmentProperties));
@@ -57,7 +58,7 @@ class Exporter
 
     protected function getHeaderColumns(): array
     {
-        return collect(['name', 'contains_html', 'description'])->merge(
+        return collect(['group', 'key', 'contains_html', 'description'])->merge(
             Locales::forFragments()->map(function (string $locale) {
                 return "text_{$locale}";
             })
