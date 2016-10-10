@@ -61,8 +61,8 @@ class Exporter
         return collect(['group', 'key', 'contains_html', 'description'])->merge(
             locales()->map(function (string $locale) {
                 return "text_{$locale}";
-            })->toArray()
-        );
+            })
+        )->toArray();
     }
 
     public function getVisibleFragments(): Collection
