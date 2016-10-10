@@ -77,6 +77,9 @@ class Exporter
 
     public function getFragments(bool $hidden): Collection
     {
-        return Fragment::where('hidden', $hidden)->orderBy('name')->get();
+        return Fragment::where('hidden', $hidden)
+            ->orderBy('group')
+            ->orderBy('key')
+            ->get();
     }
 }
