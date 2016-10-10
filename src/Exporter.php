@@ -49,7 +49,8 @@ class Exporter
                 $translatedFragmentProperties = locales()
                     ->map(function (string $locale) use ($fragment) {
                         return $fragment->getTranslation($locale);
-                    });
+                    })
+                    ->toArray();
 
                 $sheet->row($rowCounter++, array_merge($fragmentProperties, $translatedFragmentProperties));
             }
