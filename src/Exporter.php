@@ -42,7 +42,7 @@ class Exporter
                 $fragmentProperties = [
                     $fragment['group'],
                     $fragment['key'],
-                    $fragment['contains_html'],
+                    $fragment['contains_html'] ? 0 : 1,
                     $fragment['description'],
                 ];
 
