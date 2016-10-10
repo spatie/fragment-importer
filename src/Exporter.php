@@ -46,7 +46,7 @@ class Exporter
                     $fragment['description'],
                 ];
 
-                $translatedFragmentProperties = Locales::forFragments()
+                $translatedFragmentProperties = locales()
                     ->map(function (string $locale) use ($fragment) {
                         return $fragment->getTranslation($locale);
                     });
