@@ -40,15 +40,17 @@ class Exporter
 
             foreach ($fragments as $fragment) {
                 $fragmentProperties = [
-                    $fragment['name'],
-                    $fragment['contains_html'],
+                    $fragment['group'],
+                    $fragment['key'],
+                    $fragment['contains_html'] ? 0 : 1,
                     $fragment['description'],
                 ];
 
-                $translatedFragmentProperties = Locales::forFragments()
+                $translatedFragmentProperties = locales()
                     ->map(function (string $locale) use ($fragment) {
-                        return $fragment->getTranslation('text', $locale);
-                    });
+                        return $fragment->getTranslation($locale);
+                    })
+                    ->toArray();
 
                 $sheet->row($rowCounter++, array_merge($fragmentProperties, $translatedFragmentProperties));
             }
@@ -57,11 +59,11 @@ class Exporter
 
     protected function getHeaderColumns(): array
     {
-        return collect(['name', 'contains_html', 'description'])->merge(
-            Locales::forFragments()->map(function (string $locale) {
+        return collect(['group', 'key', 'contains_html', 'description'])->merge(
+            locales()->map(function (string $locale) {
                 return "text_{$locale}";
             })
-        );
+        )->toArray();
     }
 
     public function getVisibleFragments(): Collection
@@ -76,6 +78,9 @@ class Exporter
 
     public function getFragments(bool $hidden): Collection
     {
-        return Fragment::where('hidden', $hidden)->orderBy('name')->get();
+        return Fragment::where('hidden', $hidden)
+            ->orderBy('group')
+            ->orderBy('key')
+            ->get();
     }
 }

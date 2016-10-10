@@ -20,10 +20,10 @@ class ImporterTest extends TestCase
     {
         $this->performImport();
 
-        $fragment = Fragment::where('name', 'fragment.first')->first();
+        $fragment = $this->getFragment('fragment', 'first');
 
-        $this->assertEquals('Een', $fragment->translate('text', 'nl'));
-        $this->assertEquals('Un', $fragment->translate('text', 'fr'));
+        $this->assertEquals('Een', $fragment->getTranslation('nl'));
+        $this->assertEquals('Un', $fragment->getTranslation('fr'));
     }
 
     /** @test */
@@ -31,8 +31,8 @@ class ImporterTest extends TestCase
     {
         $this->performImport();
 
-        $withoutHtml = Fragment::where('name', 'fragment.first')->first();
-        $withHtml = Fragment::where('name', 'fragment.withHtml')->first();
+        $withoutHtml = $this->getFragment('fragment', 'first');
+        $withHtml = $this->getFragment('fragment', 'withHtml');
 
         $this->assertFalse($withoutHtml->contains_html);
         $this->assertTrue($withHtml->contains_html);
@@ -43,8 +43,8 @@ class ImporterTest extends TestCase
     {
         $this->performImport();
 
-        $notHidden = Fragment::where('name', 'fragment.first')->first();
-        $hidden = Fragment::where('name', 'fragment.hidden')->first();
+        $notHidden = $this->getFragment('fragment', 'first');
+        $hidden = $this->getFragment('fragment', 'hidden');
 
         $this->assertFalse($notHidden->hidden);
         $this->assertTrue($hidden->hidden);
@@ -54,38 +54,41 @@ class ImporterTest extends TestCase
     public function it_doesnt_overwrite_existing_fragments()
     {
         $fragment = new Fragment([
-            'name'          => 'fragment.first',
+            'group'         => 'fragment',
+            'key'           => 'first',
             'hidden'        => false,
             'contains_html' => false,
             'draft'         => false,
         ]);
-        $fragment->setTranslation('text', 'nl', 'Hallo');
+
+        $fragment->setTranslation('nl', 'Initial value');
         $fragment->save();
 
         $this->performImport();
 
-        $newFragment = Fragment::where('name', 'fragment.first')->first();
+        $newFragment = $this->getFragment('fragment', 'first');
 
-        $this->assertEquals('Hallo', $newFragment->translate('text', 'nl'));
+        $this->assertEquals('Initial value', $newFragment->getTranslation('nl'));
     }
 
     /** @test */
     public function it_overwrites_existing_fragments_if_the_update_flag_is_set()
     {
         $fragment = new Fragment([
-            'name'          => 'fragment.first',
+            'group'         => 'fragment',
+            'key'           => 'first',
             'hidden'        => false,
             'contains_html' => false,
             'draft'         => false,
         ]);
-        $fragment->setTranslation('text', 'nl', 'Hallo');
+        $fragment->setTranslation('nl', 'Hallo');
         $fragment->save();
 
         $this->performImport(true);
 
-        $newFragment = Fragment::where('name', 'fragment.first')->first();
+        $newFragment = $this->getFragment('fragment', 'first');
 
-        $this->assertEquals('Een', $newFragment->translate('text', 'nl'));
+        $this->assertEquals('Een', $newFragment->getTranslation('nl'));
     }
 
     protected function performImport(bool $updateExistingFragments = false)
@@ -97,5 +100,18 @@ class ImporterTest extends TestCase
         }
 
         $importer->import(__DIR__.'/fixtures/fragments.xlsx');
+    }
+
+    /**
+     * @param string $group
+     * @param string $key
+     *
+     * @return \App\Models\Fragment|null
+     */
+    protected function getFragment(string $group, string $key)
+    {
+        return Fragment::where('group', $group)
+            ->where('key', $key)
+            ->first();
     }
 }

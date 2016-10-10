@@ -21,30 +21,31 @@ class Importer
 
     public function import(string $path)
     {
-        $this->guardAgainsInvalidPath($path);
+        $this->guardAgainstInvalidPath($path);
 
         $this->loadFragments($path)->each(function (array $data) {
-            $fragment = Fragment::firstOrNew(['name' => $data['name']]);
+            $fragment = Fragment::firstOrNew(['group' => $data['group'], 'key' => $data['key']]);
 
             if (!$this->shouldImport($fragment)) {
                 return;
             }
 
-            $fragment->name = $data['name'];
+            $fragment->group = $data['group'];
+            $fragment->key = $data['key'];
             $fragment->hidden = $data['hidden'];
             $fragment->contains_html = $data['contains_html'] ?? false;
             $fragment->description = $data['description'] ?? '';
             $fragment->draft = false;
 
             $this->locales()->each(function (string $locale) use ($fragment, $data) {
-                $fragment->setTranslation('text', $locale, $data["text_{$locale}"] ?? '');
+                $fragment->setTranslation($locale, $data["text_{$locale}"] ?? '');
             });
 
             $fragment->save();
         });
     }
 
-    protected function guardAgainsInvalidPath(string $path)
+    protected function guardAgainstInvalidPath(string $path)
     {
         if (!file_exists($path)) {
             throw FragmentFileNotFound::inPath($path);
@@ -55,7 +56,7 @@ class Importer
     {
         return Excel::load($path)->all()->flatMap(function (RowCollection $sheet) {
             return $sheet->reject(function (CellCollection $row) {
-                return empty(trim($row->name));
+                return empty(trim($row->group));
             })->map(function (CellCollection $row) use ($sheet) {
                 return $row->put('hidden', $sheet->getTitle() === 'hidden')->toArray();
             });

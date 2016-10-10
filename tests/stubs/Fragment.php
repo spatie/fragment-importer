@@ -2,18 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations;
+use Spatie\TranslationLoader\LanguageLine;
 
-class Fragment extends Model
+class Fragment extends LanguageLine
 {
-    use HasTranslations;
-
-    protected $guarded = [];
-    protected $casts = [
-        'contains_html' => 'bool',
-        'draft'         => 'bool',
-        'hidden'        => 'bool',
+    public $casts = [
+        'contains_html' => 'boolean',
+        'hidden'        => 'boolean',
+        'text'          => 'array',
     ];
-    public $translatable = ['text'];
 }
