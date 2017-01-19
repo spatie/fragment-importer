@@ -26,7 +26,7 @@ class ImportFragments extends Command
         Cache::flush();
         $this->comment('Cache cleared');
 
-        $latestExcelFile = $this->getLastestFragmentExcel();
+        $latestExcelFile = $this->getLatestFragmentExcel();
 
         $this->comment("Importing fragments from {$latestExcelFile}");
         $importer->import($latestExcelFile);
@@ -34,7 +34,7 @@ class ImportFragments extends Command
         $this->info('Imported '.($this->option('update') ? 'all' : 'only the new').' fragments!');
     }
 
-    public function getLastestFragmentExcel() : string
+    public function getLatestFragmentExcel() : string
     {
         $directory = database_path('seeds/data');
 
