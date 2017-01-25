@@ -2,6 +2,9 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 3.0.1 - 2016-01-25
+- fix deps
+
 ## 3.0.0 - 2016-10-10
 - make compatible with `laravel-translation-loader`
 
