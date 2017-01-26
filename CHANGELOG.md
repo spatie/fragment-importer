@@ -2,6 +2,9 @@
 
 All Notable changes to `fragment-importer` will be documented in this file
 
+## 3.1.1 - 2016-01-26
+- fix deps
+
 ## 3.0.1 - 2016-01-25
 - fix deps
 
