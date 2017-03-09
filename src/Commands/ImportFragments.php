@@ -31,7 +31,7 @@ class ImportFragments extends Command
         $this->comment("Importing fragments from {$latestExcelFile}");
         $importer->import($latestExcelFile);
 
-        $this->info('Imported '.($this->option('update') ? 'all' : 'only the new').' fragments!');
+        $this->info($this->getImportMessage($importer));
     }
 
     public function getLatestFragmentExcel() : string
@@ -45,5 +45,27 @@ class ImportFragments extends Command
         }
 
         return $files->last();
+    }
+
+    protected function getImportMessage($importer): string
+    {
+        $newFragments = $importer->getNewFragments()->implode('key', ', ');
+
+        if (! $newFragments && ! $this->option('update')) {
+            return 'No new fragments imported.';
+        }
+
+        $message = 'Imported only ';
+
+        if ($this->option('update')) {
+            $message = 'Imported all fragments' . ($newFragments ? ' including ' : '.');
+        }
+
+        if ($newFragments) {
+            $message .= "the following new fragments: {$newFragments}";
+            return $message;
+        }
+
+        return $message;
     }
 }

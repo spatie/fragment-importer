@@ -14,6 +14,14 @@ class Importer
     /** @var bool */
     protected $updateExistingFragments = false;
 
+    /** @var  \Illuminate\Support\Collection */
+    protected $newFragments;
+
+    public function __construct()
+    {
+        $this->newFragments = new Collection();
+    }
+
     public function updateExistingFragments()
     {
         $this->updateExistingFragments = true;
@@ -30,6 +38,10 @@ class Importer
                 return;
             }
 
+            if (! $fragment->exists) {
+                $this->newFragments->push($fragment);
+            }
+
             $fragment->group = $data['group'];
             $fragment->key = $data['key'];
             $fragment->hidden = $data['hidden'];
@@ -43,6 +55,11 @@ class Importer
 
             $fragment->save();
         });
+    }
+
+    public function getNewFragments(): Collection
+    {
+        return $this->newFragments;
     }
 
     protected function guardAgainstInvalidPath(string $path)
