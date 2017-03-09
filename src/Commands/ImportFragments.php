@@ -51,21 +51,14 @@ class ImportFragments extends Command
     {
         $newFragments = $importer->getNewFragments()->implode('key', ', ');
 
-        if (! $newFragments && ! $this->option('update')) {
-            return 'No new fragments imported.';
-        }
-
-        $message = 'Imported only ';
-
         if ($this->option('update')) {
-            $message = 'Imported all fragments' . ($newFragments ? ' including ' : '.');
+            return 'Imported all fragments'.($newFragments ? " including {$newFragments}" : '.');
         }
 
         if ($newFragments) {
-            $message .= "the following new fragments: {$newFragments}";
-            return $message;
+            return "Imported only the following new fragments: {$newFragments}";
         }
 
-        return $message;
+        return 'No new fragments imported.';
     }
 }
