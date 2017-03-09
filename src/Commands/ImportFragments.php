@@ -52,7 +52,7 @@ class ImportFragments extends Command
         $newFragments = $importer->getNewFragments()->implode('key', ', ');
 
         if ($this->option('update')) {
-            return 'Imported all fragments'.($newFragments ? " including {$newFragments}" : '.');
+            return 'Imported all fragments'.($newFragments ? " including new fragments: {$newFragments}" : '.');
         }
 
         if ($newFragments) {
