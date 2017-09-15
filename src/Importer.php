@@ -72,7 +72,7 @@ class Importer
                 }
 
                 return $fragment;
-            });
+            })->filter();
         });
     }
 }
